@@ -87,6 +87,7 @@ typedef struct{
 	int		vida;
 	bool 	acertos;
 	bool 	ativo;
+	int 	tabuleiro[MAX][MAX];
 } Jogador;
 
 typedef enum {

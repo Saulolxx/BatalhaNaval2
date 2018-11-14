@@ -26,6 +26,7 @@ void iniciarJogador(Jogador *jogador, Barco barco, char nome[]){
 	jogador->barco	= barco;
 	jogador->vida	= 25;
 	strcpy(jogador->nome, nome);
+	carregarTabuleiro(jogador->tabuleiro);
 }
 
 /**
