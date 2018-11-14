@@ -1,6 +1,10 @@
 #include "game.h"
 
-
+/**
+*	/brief Efeito datilografia, escreve letra por letra
+*	/param texto String/Texto a ser datilografado
+*	/return Retorna uma função
+*/
 void escreverTexto(char texto[]){
 	int i;
 	_setcursortype(1);
@@ -10,6 +14,12 @@ void escreverTexto(char texto[]){
 	}
 }
 
+/**
+*	/brief Efeito datilografia com textos coloridos, escrever letra por letra
+*	/param texto String/Texto a ser datilografado
+*	/param color Cor ao qual o texto será submetido
+*	/return Retorna uma função
+*/
 void escreverTextoColorido(char texto[], int color){
 	int i;
 	_setcursortype(1);
@@ -19,18 +29,34 @@ void escreverTextoColorido(char texto[], int color){
 	}
 }
 
+/**
+*	/brief Colore um caráctere
+*	/param c Caráctere a ser submetido a mudança de cor
+*	/param color Cor ao qual o caráctere será submetido
+*	/return Retorna uma função
+*/
 void colorChar(char c, int color){
 	textcolor(color);
 	putchar(c);
 	textcolor(LIGHTGRAY);
 }
 
+/**
+*	/brief Colore um conjunto de carácteres/texto
+*	/param text Conjunto de caráctere/texto a ser submetido a mudança de cor
+*	/param color Cor ao qual o texto será submetido
+*	/return Retorna uma função
+*/
 void colorText(char text[], int color){
 	textcolor(color);
 	printf("%s", text);
 	textcolor(LIGHTGRAY);
 }
 
+/**
+*	/brief Impressão de Logotipo do programa
+*	/return Retorna uma função
+*/
 void logo(){
 printf("\t\t\t ______                  _ _              ______                   _ \n");
 printf("\t\t\t(____  \\       _        | | |            |  ___ \\                 | |\n");
@@ -42,12 +68,20 @@ colorText("\t\t\t\t Créditos: Adinair, Filipe, João Comunista, Marcola, Saulo Li
 printf("\n\n");
 }
 
+/**
+*	/brief Impressão do caráctere seta (>) para ser utilizado no menu
+*	/return Retorna uma função
+*/
 void imprimirSeta(){
 	textcolor(YELLOW);
 	putchar('>');
 	textcolor(LIGHTGRAY);
 }
 
+/**
+*	/bried Impressão do menu principal
+*	/return Retorna um int com o valor da opção desejada 
+*/
 int menuInicial(){
 	
 	int tecla, y = 14, level,x, z;
@@ -127,6 +161,10 @@ int menuInicial(){
 	}while(1<2);
 }
 
+/**
+*	/bried Impressão do menu de nível
+*	/return Retorna um int com o valor da opção desejada 
+*/
 int menuNivel(){
 	
 	int tecla, x = 39;
@@ -196,6 +234,10 @@ int menuNivel(){
 	}while(1<2);
 }
 
+/**
+*	/bried Impressão do menu de tipo
+*	/return Retorna um int com o valor da opção desejada 
+*/
 int menuTipo(){
 		
 	int tecla, x = 44;
