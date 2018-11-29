@@ -2,37 +2,38 @@
 
 int main(int argc, char *argv[]) {
 	setlocale(LC_ALL, "portuguese");
-	// 9 , 8, 8
 	Barco barco = {3, 1, 1, 1, 1, 2};
-	int tabuleiro[MAX][MAX];
+	int tab1[MAX][MAX], tab2[MAX][MAX];
+	printf("%d", MAX);
 	Jogador j1[2], j2;
 	
-	printf("Nome do Jogador 01: %s \n", j1[0].nome);
-	iniciarJogador(&j1[0], barco, "Saulo Lins");
-	//iniciarJogador(&j1[1], barco, "Saulo Lins");
-	printf("Nome do Jogador 01: %s \n", j1[0].nome);
-	printf("Numero de Jogadores registrados: %d\n\n", contarJogadores(j1));
-	carregarTabuleiro(tabuleiro);
-	imprimeTabuleiro(tabuleiro, j1);
-	sorteiaFrota(tabuleiro, barco, true);
-	imprimeTabuleiro(tabuleiro, j1);	
-	//carregarTabuleiro(tabuleiro);
-	//iniciaJogador(&j1, barco, "Testando");
-	//imprimeTabuleiroS(tabuleiro, j1);
+	// Inicia Tabelas
+	carregarTabuleiro(tab1);
+	carregarTabuleiro(tab2);
 	
+	//Iniciar Jogadores
+	iniciarJogador(&j1[0], barco, "Saulo Lins");
+	iniciarJogador(&j1[1], barco, "Computador");
+	
+	//sortear as Frotas
+	sorteiaFrota(j1[0].navio, barco, true);
+	sorteiaFrota(j1[1].navio, barco, true);
+	
+	imprimeTabuleiro(tab1, j1);
+	iniciaJogo(j1);
 	
 	system("pause");
-	/*do{				
+	do{				
 		switch(menuInicial()){
 			case INDIVIDUAL:								
 				switch(menuNivel()){
 					case FACIL:
 						//Carregar Tabela
 						clrscr();
-						carregarTabuleiro(tabuleiro);
-						iniciaJogador(&j1, barco, "Jogador 1");
-						iniciaJogador(&j2, barco, "Máquina");
-						imprimeTabuleiro(tabuleiro, j1, j2);
+						carregarTabuleiro(tab1);
+						iniciarJogador(&j1[0], barco, "Jogador 1");
+						iniciarJogador(&j1[1], barco, "Máquina");
+						//imprimeTabuleiro(tabuleiro, j1, j2);
 
 						//Sortear os Barcos
 						
@@ -92,6 +93,6 @@ int main(int argc, char *argv[]) {
 				break;
 			
 		}
-	}while(1<2);*/
+	}while(1<2);
 	return 0;
 }

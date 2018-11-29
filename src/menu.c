@@ -7,6 +7,7 @@
 */
 void escreverTexto(char texto[]){
 	int i;
+	
 	_setcursortype(1);
 	for(i = 0; i < strlen(texto); i++){
 		printf("%c", texto[i]);

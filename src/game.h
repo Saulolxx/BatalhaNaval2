@@ -42,7 +42,7 @@
 #define MANUAL 20
 #define AUTOMATICO 21
 
-#define MAX 15					//Valor máximo adotado nas matrizes
+#define MAX 13					//Valor máximo adotado nas matrizes
 
 
 //	Define os tipos de barcos
@@ -82,11 +82,11 @@ typedef enum{
 // Define a tipagem de váriavel Jogador
 typedef struct{
 	char	nome[100];
-	Barco 	barco;
+	Barco 	navios_qtd;
 	int		vida;
 	bool 	acertos;
 	bool 	ativo;
-	int 	tabuleiro[MAX][MAX];
+	int 	navio[MAX][MAX];
 } Jogador;
 
 // Define os icones a serem utilizados na matriz/tabuleiro
@@ -98,7 +98,7 @@ typedef enum {
 } Icon;
 
 // Lista de funções do menu
-void escreverTexto(char texto[]);
+void escreverTexto(char texto[]); 
 void escreverTextoColorido(char texto[], int color);
 void colorChar(char c, int color);
 void colorText(char text[], int color);
@@ -109,7 +109,7 @@ int menuNivel();
 int menuTipo();
 
 // Lista de funções da batalha naval
-int contarJogadores(Jogador jogadores[]);
+int contaJogador(Jogador jogadores[]);
 void iniciarJogador(Jogador *jogador, Barco barco, char nome[]);
 void imprimeIcone(int cod);
 void carregarTabuleiro(int tabuleiro[][MAX]);
@@ -122,7 +122,7 @@ int verificaDestroyer(int direcao, int linha, int coluna, int tabela[][MAX]);
 int verificaFragata(int direcao, int linha, int coluna, int tabela[][MAX]);
 int verificaPortaAvioes(int direcao, int linha, int coluna, int tabela[][MAX]);
 int verificaSubmarino(int direcao, int linha, int coluna, int tabela[][MAX]);
-void posicionaBarcos(int barco, int direcao, int linha, int coluna, int tabela[][MAX]);
+void posicionaBarcos(int barco, int direcao, int linha, int coluna, int tabela[][MAX], Barco *navio);
 void posicionaCorveta(int direcao, int linha, int coluna, int tabela[][MAX]);
 void posicionaCruzador(int direcao, int linha, int coluna, int tabela[][MAX]);
 void posicionaDestroyer(int direcao, int linha, int coluna, int tabela[][MAX]);

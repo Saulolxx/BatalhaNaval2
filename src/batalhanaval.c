@@ -5,7 +5,7 @@
 *	\param jogadores Vetor de jogadores
 *	\return Retorna um int com o valor de quantos jogadores foram inicializados;
 */
-int contarJogadores(Jogador jogadores[]){
+int contaJogador(Jogador jogadores[]){
 	int i, c = 0;
 	for(i = 0; i < 2; i++){
 		if(!jogadores[i].ativo){
@@ -23,10 +23,10 @@ int contarJogadores(Jogador jogadores[]){
 void iniciarJogador(Jogador *jogador, Barco barco, char nome[]){
 	jogador->acertos = false;
 	jogador->ativo	= true;
-	jogador->barco	= barco;
+	jogador->navios_qtd	= barco;
 	jogador->vida	= 25;
 	strcpy(jogador->nome, nome);
-	carregarTabuleiro(jogador->tabuleiro);
+	carregarTabuleiro(jogador->navio);
 }
 
 /**
@@ -69,19 +69,18 @@ void carregarTabuleiro(int tabuleiro[][MAX]){
 */
 void imprimeTabuleiro(int tabuleiro[][MAX], Jogador jogadores[]){
 	int i, j;
-	
 	printf("\n\n");	
-	if(contarJogadores(jogadores) == 1){
+	if(contaJogador(jogadores) == 1){
 		printf("\t       NOME: %10s               ENERGIA: %2d/25\n", jogadores[0].nome, jogadores[0].vida);
 		printf("\t       ---------------------------------------------\n");
 		printf("\t         |");
-		for (i = 0 ; i < MAX - 1 ; i++) {
+		for (i = 0 ; i < MAX ; i++) {
 			printf("%3d", i+1);
 		}
 		printf("\n\t       --+------------------------------------------\n");
-		for (i = 1 ; i < MAX ; i++) {
-			printf("\t       %2d|", i);
-			for (j = 1 ; j < MAX ; j++) {
+		for (i = 0 ; i < MAX ; i++) {
+			printf("\t       %2d|", i+1);
+			for (j = 0 ; j < MAX ; j++) {
 				imprimeIcone(tabuleiro[i][j]);
 			}
 			printf("\n");
@@ -92,27 +91,67 @@ void imprimeTabuleiro(int tabuleiro[][MAX], Jogador jogadores[]){
 		printf("\t       ---------------------------------------------");
 		printf("            ---------------------------------------------\n");		
 		printf("\t         |");
-		for (i = 0 ; i < MAX-1 ; i++) {
+		for (i = 0 ; i < MAX ; i++) {
 			printf("%3d", i+1);
 		}
 		printf("              |");
-		for (i = 0 ; i < MAX-1 ; i++) {
+		for (i = 0 ; i < MAX ; i++) {
 			printf("%3d", i+1);
 		}		
 		printf("\n\t       --+------------------------------------------");
 		printf("            --+------------------------------------------\n");		
-		for (i = 1 ; i < MAX ; i++) {
+		for (i = 0 ; i < MAX ; i++) {
 			printf("\t       %2d|", i);
-			for (j = 1 ; j < MAX ; j++) {
+			for (j = 0 ; j < MAX ; j++) {
 				imprimeIcone(tabuleiro[i][j]);
 			}
 			printf("         ");
 			printf("   %2d|", i);
-			for (j = 1 ; j < MAX ; j++) {
+			for (j = 0 ; j < MAX ; j++) {
 				imprimeIcone(tabuleiro[i][j]);
 			}
 			printf("\n");
 		}
+	}
+}
+
+/**
+*	\brief Conta a quantidade de cada tipo de navio
+*	\param tipo Inteiro referente ao tipo de navio a ser analisado
+*	\param navios Todos os tipos de navios
+*	\return Retorna a quantidade de navios
+*/
+int contaNavio(Barco *navios, int tipo){
+	switch(tipo){
+		case 0:
+			return navios->corveta;
+			break;
+
+		case 1:
+			return navios->cruzador;
+			break;
+		case 2:
+			return navios->destroyer;
+			break;
+		case 3:
+			return navios->fragata;
+			break;
+		case 4:
+			return navios->porta_avioes;
+			break;
+		case 5:
+			return navios->submarino;
+			break;
+	}
+}
+
+/**
+*	/brief Inicia e coordena as rodadas do jogo
+*	/param jogadores Recebe uma array de jogadores
+*	/return Retorna uma função
+*/
+void iniciaJogo(Jogador jogador[]){
+	if(contaJogador(jogador) == 1){
 	}
 }
 
@@ -122,22 +161,36 @@ void imprimeTabuleiro(int tabuleiro[][MAX], Jogador jogadores[]){
 *	\param func	Valor booleano para definir se o sorteio se dará de maneira automática ou manual (true: automatico, false: manuel)
 *	\return Retorna uma função
 */
-void sorteiaFrota(int tabuleiro[][MAX],Barco barcos, bool func){
-	int barco, linha, coluna, direcao = HORIZONTAL, sbarcos, i;
+void sorteiaFrota(int tabuleiro[][MAX],Barco navios, bool func){
+	/**
+	*	\var t_navio	Tipo de navio {0-5}
+	*	\var linha		Posição horizontal onde os navios serão posicionados
+	*	\var coluna		Posição vertical onde os navios serão posicionados
+	*	\var direcao	Direção para qual o navio será posicionado
+	*	\var s_navios	Soma de todos os navios
+	*/
+	int t_navio, s_navios, linha, coluna, direcao;
+	
 	srand((unsigned)time(NULL));
-	sbarcos = (barcos.corveta + barcos.cruzador + barcos.destroyer + barcos.fragata + barcos.porta_avioes + barcos.submarino);
+	
+	s_navios = navios.corveta + navios.cruzador + navios.destroyer + navios.fragata + navios.porta_avioes + navios.submarino;
 	if(func){
-		while(sbarcos > 0){
-			barco 	= rand()%6;
+		while( s_navios > 0){
+			t_navio	= rand()%6;
+			
+			while(contaNavio(&navios, t_navio) == 0){
+				t_navio 	= rand()%6;
+			}
+			
 			linha 	= rand()%14;
 			coluna 	= rand()%14;
 			direcao = rand()%2;
 			
-			if(verificaBarcos(barco, direcao, linha, coluna, tabuleiro)){
-				posicionaBarcos(barco, direcao,linha, coluna, tabuleiro);
-				sbarcos--;
-			}
 			
+			if(verificaBarcos(t_navio, direcao, linha, coluna, tabuleiro)){
+				posicionaBarcos(t_navio, direcao,linha, coluna, tabuleiro, &navios);
+				s_navios--;
+			}
 		}
 	}
 }
@@ -299,22 +352,27 @@ void sorteiaFrota(int tabuleiro[][MAX],Barco barcos, bool func){
 *	\param tabela Matriz/Tabela que será posicionado os barcos
 *	\return Retorna um valor inteiro 1: É possível adicionar o navio, 2: Não é possível adicionar o navio
 */
- void posicionaBarcos(int barco, int direcao, int linha, int coluna, int tabela[][MAX]){
+ void posicionaBarcos(int barco, int direcao, int linha, int coluna, int tabela[][MAX], Barco *navio){
  	switch(barco){
  		case CORVET:
  			 posicionaCorveta(direcao, linha, coluna, tabela);
+			 navio->corveta--;
  			 break;
  		case CRUZAD:
  			 posicionaCruzador(direcao, linha, coluna, tabela);
+ 			 navio->cruzador--;
  			 break;
  		case DESTRO:
  			 posicionaDestroyer(direcao, linha, coluna, tabela);
+ 			 navio->destroyer--;
  			 break;
  		case FRAGAT:
  			 posicionaFragata(direcao, linha, coluna, tabela);
+ 			 navio->fragata--;
  			 break;
  		case PORTAA:
  			 posicionaPortaAvioes(direcao, linha, coluna, tabela);
+ 			 navio->porta_avioes--;
  			 break;
  		case SUBMAR:
  			 posicionaSubmarino(direcao, linha, coluna, tabela);
